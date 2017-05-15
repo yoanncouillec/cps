@@ -1,0 +1,24 @@
+var i, j, k;
+i, j, k := 1;
+
+print "3";
+while i < 3 {
+   j := 0;
+   print "4";
+   print "2";
+   while j < 3 {
+      if j = 2 {
+	 print "break j";
+	 break;
+      }
+      j++;
+   }
+   print "apres in while";
+   if i = 2 {
+      print "break i";
+      break;
+   }
+   print "1";
+   i++;
+}
+print "apres out while";

@@ -1,0 +1,28 @@
+var x;
+x := 0;
+
+callcc y {
+   while x < 5 {
+      print x;
+      if x = 2 {
+	 print "avant throw";
+	 throw y;
+	 print "apres throw";
+      }
+      else {
+	 x := x + 1;
+      }
+   }
+   print "apres while";
+}
+
+try {
+   print "avant raise";
+   raise a;
+   print "apres raise";
+}
+with a {
+   print "aaaaa";
+}
+
+print "finished";
