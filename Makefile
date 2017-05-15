@@ -1,4 +1,4 @@
-all: compiler #ast.cmo parser.ml parser.cmi parser.cmo lexer.ml  lexer.cmo compiler.cmo compiler
+all: evaluator #ast.cmo parser.ml parser.cmi parser.cmo lexer.ml  lexer.cmo evaluator.cmo evaluator
 
 %.cmo:%.ml
 	ocamlc -c $^ -g
@@ -18,19 +18,19 @@ parser.cmi: parser.mli
 lexer.ml: lexer.mll
 	ocamllex $^ -o $@
 
-compiler: ast.cmo parser.cmo lexer.cmo compiler.cmo
+evaluator: ast.cmo parser.cmo lexer.cmo evaluator.cmo
 	ocamlc -o $@ $^ -g
 
 test: test-assignment test-break test-callcc
 
-test-assignment: test_assignment.my compiler
-	./compiler < $<
+test-assignment: test_assignment.my evaluator
+	./evaluator < $<
 
-test-break: test_break.my compiler
-	./compiler < $<
+test-break: test_break.my evaluator
+	./evaluator < $<
 
-test-callcc: test_callcc.my compiler
-	./compiler < $<
+test-callcc: test_callcc.my evaluator
+	./evaluator < $<
 
 clean:
-	rm -rf compiler parser.ml lexer.ml *.cmo *.cmi *~ *.mli *.output
+	rm -rf evaluator parser.ml lexer.ml *.cmo *.cmi *~ *.mli *.output
