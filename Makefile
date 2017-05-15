@@ -1,28 +1,30 @@
-compiler: ast.cmo parser.cmi parser.cmo lexer.cmo compiler.cmo
-	ocamlc -o compiler lexer.cmo ast.cmo parser.cmo compiler.cmo -g
+all: ast.cmo parser.ml parser.cmi parser.cmo lexer.ml  lexer.cmo compiler.cmo compiler
 
-.SUFFIXES: .mll .mly .mli .ml .cmi .cmo .cmx
-
-.mll.mli:
-	ocamllex $<
-
-.mll.ml:
-	ocamllex $<
-
-.mly.mli:
-	ocamlyacc $<
-
-.mly.ml:
-	ocamlyacc $<
-
-.mli.cmi:
+%.cmo:%.ml
 	ocamlc -c $^ -g
 
-.ml.cmo:
-	ocamlc -c $^ -g
+parser.ml: parser.mly parser.cmi
+	ocamlyacc $<
 
-test: test.my
-	./compiler < $^
+parser.cmi:parser.mli
+	ocamlc -c $^
+
+lexer.ml: lexer.mll
+	ocamllex $^ -o $@
+
+compiler: ast.cmo parser.cmo lexer.cmo compiler.cmo
+	ocamlc -o $@ $^ -g
+
+test: test-assignment test-break test-callcc
+
+test-assignment: test_assignment.my compiler
+	./compiler < $<
+
+test-break: test_break.my compiler
+	./compiler < $<
+
+test-callcc: test_callcc.my compiler
+	./compiler < $<
 
 clean:
-	rm -rf *.cm*  *.mli compiler parser.ml *~
+	rm -rf compiler parser.ml lexer.ml *.cmo *.cmi *~
